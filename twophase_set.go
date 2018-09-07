@@ -10,8 +10,8 @@ var (
 // TwoPhaseSet supports both addition and removal of
 // elements to set.
 type TwoPhaseSet struct {
-	addSet *GSet
-	rmSet  *GSet
+	addSet GSet
+	rmSet  GSet
 }
 
 // NewTwoPhaseSet returns a new instance of TwoPhaseSet.

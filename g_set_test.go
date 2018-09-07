@@ -61,13 +61,13 @@ func TestGSetMarshalJSON(t *testing.T) {
 		add      []interface{}
 		expected string
 	}{
-		{[]interface{}{}, `{"type":"g-set","e":[]}`},
-		{[]interface{}{1}, `{"type":"g-set","e":[1]}`},
-		{[]interface{}{1, 2, 3}, `{"type":"g-set","e":[3,2,1]}`},
-		{[]interface{}{1, 2, 3}, `{"type":"g-set","e":[1,2,3]}`},
-		{[]interface{}{"alpha"}, `{"type":"g-set","e":["alpha"]}`},
-		{[]interface{}{"alpha", "beta", "gamma"}, `{"type":"g-set","e":["alpha","beta","gamma"]}`},
-		{[]interface{}{"alpha", 1, "beta", 2}, `{"type":"g-set","e":[1,2,"alpha","beta"]}`},
+		{[]interface{}{}, `[]`},
+		{[]interface{}{1}, `[1]`},
+		{[]interface{}{1, 2, 3}, `[3,2,1]`},
+		{[]interface{}{1, 2, 3}, `[1,2,3]`},
+		{[]interface{}{"alpha"}, `["alpha"]`},
+		{[]interface{}{"alpha", "beta", "gamma"}, `["alpha","beta","gamma"]`},
+		{[]interface{}{"alpha", 1, "beta", 2}, `[1,2,"alpha","beta"]`},
 	} {
 
 		gset := NewGSet()
@@ -81,16 +81,14 @@ func TestGSetMarshalJSON(t *testing.T) {
 			t.Fatalf("unexpected error on marshalling gset: %s", err)
 		}
 
-		a := struct {
-			E []interface{} `json:"e"`
-		}{}
+		a := NewGSet()
 
 		if err = json.Unmarshal(out, &a); err != nil {
 			t.Fatalf("unexpected error on unmarshalling serialized %q: %s", tt.expected, err)
 		}
 
 		expectedMap := map[interface{}]struct{}{}
-		for _, i := range a.E {
+		for i := range a {
 			expectedMap[i] = struct{}{}
 		}
 
@@ -99,7 +97,7 @@ func TestGSetMarshalJSON(t *testing.T) {
 		}
 
 		actualMap := map[interface{}]struct{}{}
-		for _, i := range a.E {
+		for i := range a {
 			actualMap[i] = struct{}{}
 		}
 
